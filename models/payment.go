@@ -1,10 +1,13 @@
 package models
 
-import "github.com/shopspring/decimal"
+import (
+	"time"
+)
 
 type Payment struct {
-	ID          int64           `db:"id"`
-	VehicleID   int64           `db:"vehicle_id"`
-	PaymentType string          `db:"payment_type"`
-	Amount      decimal.Decimal `db:"amount"`
+	ID          int       `json:"id" db:"id"`
+	VehicleID   int       `json:"vehicleId" db:"vehicleId"`
+	PaymentType string    `json:"paymentType" db:"paymentType"`
+	Amount      float64   `json:"amount" db:"amount"`
+	CreatedAt   time.Time `json:"createdAt" db:"createdAt"`
 }
