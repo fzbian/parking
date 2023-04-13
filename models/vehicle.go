@@ -20,13 +20,23 @@ const (
 	C Zone = "C"
 )
 
+type VehicleType string
+
+const (
+	Normal        VehicleType = "NORMAL"
+	Discapacitado VehicleType = "DISCAPACITADO"
+	Emergencia    VehicleType = "EMERGENCIA"
+	Proveedor     VehicleType = "PROVEEDOR"
+	VIP           VehicleType = "VIP"
+)
+
 type Vehicle struct {
-	ID          int       `json:"id" db:"id"`
-	PlateNumber string    `json:"plate_number" db:"plate_number"`
-	VehicleType string    `json:"vehicle_type" db:"vehicle_type"`
-	Color       Color     `json:"color" db:"color"`
-	Zone        Zone      `json:"zone" db:"zone"`
-	ParkingSpot int       `json:"parking_spot" db:"parking_spot"`
-	EntryTime   time.Time `json:"entry_time" db:"entry_time"`
-	ExitTime    time.Time `json:"exit_time" db:"exit_time"`
+	ID          int         `json:"id" db:"id"`
+	PlateNumber string      `json:"plate_number" db:"plate_number"`
+	VehicleType VehicleType `json:"vehicle_type" db:"vehicle_type"`
+	Color       Color       `json:"color" db:"color"`
+	Zone        Zone        `json:"zone" db:"zone"`
+	ParkingSpot int         `json:"parking_spot" db:"parking_spot"`
+	EntryTime   time.Time   `json:"entry_time" db:"entry_time"`
+	ExitTime    time.Time   `json:"exit_time" db:"exit_time"`
 }
