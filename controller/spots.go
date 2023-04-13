@@ -6,6 +6,27 @@ import (
 	"github.com/fzbian/parking/models"
 )
 
+func GetVehicle(plateNumber string) (*models.Vehicle, error) {
+	var vehicle *models.Vehicle
+
+	if plateNumber == "" {
+		return nil, errors.New("plate number is required")
+	}
+
+	db, err := config.Connect()
+	if err != nil {
+		panic(err)
+	}
+
+	// Find the vehicle by its plate number
+	result := db.Where("plate_number = ?", plateNumber).First(&vehicle)
+	if result.Error != nil {
+		return nil, errors.New("vehicle not found")
+	}
+
+	return vehicle, nil
+}
+
 func InsertVehicle(vehicle *models.Vehicle) error {
 	db, err := config.Connect()
 	if err != nil {
