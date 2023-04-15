@@ -1,19 +1,17 @@
 package config
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 	"os"
 )
 
-func Connect() (*gorm.DB, error) {
+func Connect() *gorm.DB {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		panic(err)
 	}
 
 	dns := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
@@ -23,12 +21,17 @@ func Connect() (*gorm.DB, error) {
 		os.Getenv("DB_PORT"),
 		os.Getenv("DB_DATABASE"))
 
-	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dns))/*&gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}*/
+	if err != nil {
+		panic(err)
+	}
 
-	return db, nil
+	return db
 }
 
-func TestDBConnection() error {
+/*func TestDBConnection() error {
 	db, err := Connect()
 	if err != nil {
 		return err
@@ -46,4 +49,4 @@ func TestDBConnection() error {
 	}(sqlDB)
 
 	return sqlDB.Ping()
-}
+}*/
