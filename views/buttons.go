@@ -28,6 +28,7 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 				if err != nil {
 					NewPopUp(err.Error(), window)
 				} else {
+					UpdateTable()
 				}
 			}
 			AddVehicleForm.Hide()

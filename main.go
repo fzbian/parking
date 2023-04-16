@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/canvas"
 	"fyne.io/fyne/layout"
+	"github.com/fzbian/parking/assets"
 	"github.com/fzbian/parking/views"
 )
 
@@ -19,11 +20,7 @@ func main() {
 	})
 	window.SetFixedSize(true)
 
-	LogoResource, err := fyne.LoadResourceFromPath("assets/icon.png")
-	if err != nil {
-		panic(err)
-	}
-
+	LogoResource := assets.GetIcon()
 	window.SetIcon(LogoResource)
 
 	LogoObject := canvas.NewImageFromResource(LogoResource)
@@ -36,16 +33,27 @@ func main() {
 	AddVehicleButton, ExitVehicleButton := views.LeftButtons(window)
 	ExportRecordsButton, ExitWindowButton := views.RightButtons(window)
 
-	LeftContainer := fyne.NewContainerWithLayout(layout.NewVBoxLayout(), AddVehicleButton, ExitVehicleButton, LogoContainer)
-	MidContainer := fyne.NewContainerWithLayout(layout.NewGridWrapLayout(fyne.NewSize(900, 650)), VehicleTable)
-	RightContainer := fyne.NewContainerWithLayout(layout.NewVBoxLayout(), ExportRecordsButton, ExitWindowButton)
+	LeftContainer := fyne.NewContainerWithLayout(layout.NewVBoxLayout(),
+		AddVehicleButton,
+		ExitVehicleButton,
+		LogoContainer,
+	)
 
-	HorizontalContainer := fyne.NewContainerWithLayout(layout.NewHBoxLayout(),
+	MidContainer := fyne.NewContainerWithLayout(layout.NewGridWrapLayout(
+		fyne.NewSize(900, 650)),
+		VehicleTable)
+
+	RightContainer := fyne.NewContainerWithLayout(layout.NewVBoxLayout(),
+		ExportRecordsButton,
+		ExitWindowButton,
+	)
+
+	MainContainer := fyne.NewContainerWithLayout(layout.NewHBoxLayout(),
 		LeftContainer,
 		MidContainer,
 		RightContainer,
 	)
 
-	window.SetContent(HorizontalContainer)
+	window.SetContent(MainContainer)
 	window.ShowAndRun()
 }
