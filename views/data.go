@@ -2,8 +2,8 @@ package views
 
 import (
 	"fmt"
-	"fyne.io/fyne"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/widget"
 	"github.com/fzbian/parking/models"
 	"github.com/fzbian/parking/utils"
 )

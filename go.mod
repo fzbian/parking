@@ -3,7 +3,6 @@ module github.com/fzbian/parking
 go 1.20
 
 require (
-	fyne.io/fyne v1.4.3
 	fyne.io/fyne/v2 v2.3.3
 	github.com/joho/godotenv v1.5.1
 	gorm.io/driver/mysql v1.5.0

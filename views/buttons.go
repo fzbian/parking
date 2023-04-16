@@ -1,9 +1,9 @@
 package views
 
 import (
-	"fyne.io/fyne"
-	"fyne.io/fyne/dialog"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/widget"
 	"github.com/fzbian/parking/controller"
 	"github.com/fzbian/parking/models"
 )
@@ -25,7 +25,7 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 					VehicleType: VehicleTypeEntry.Selected,
 				})
 				NewPopUp(message, window)
-				RefreshTable() // TODO: Didn't work
+				RefreshTable()
 				if err != nil {
 					NewPopUp(err.Error(), window)
 				}
