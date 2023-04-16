@@ -47,3 +47,9 @@ func GetTable(data [][]string) *widget.Table {
 
 	return table
 }
+
+func GetVehiclesTable() *widget.Table {
+	data := GetData()
+	table := GetTable(data)
+	return table
+}
