@@ -92,6 +92,22 @@ func IsInParking(plate string) bool {
 	return false
 }
 
+func GetVehiclePlateNumberBySpotId(spotId int) (string, error) {
+	var vehicleSpot models.VehiclesSpots
+	resultVehiclesSpots := utils.Db.Table("vehicles_spots").Where("spot = ?", spotId).First(&vehicleSpot)
+	if errors.Is(resultVehiclesSpots.Error, gorm.ErrRecordNotFound) {
+		return "", errors.New("No se encontro el vehiculo")
+	}
+
+	var vehicle models.Vehicles
+	resultVehicles := utils.Db.Table("vehicles").Where("id = ?", vehicleSpot.VehicleId).First(&vehicle)
+	if errors.Is(resultVehicles.Error, gorm.ErrRecordNotFound) {
+		return "", errors.New("No se encontro el vehiculo")
+	}
+
+	return vehicle.PlateNumber, nil
+}
+
 func ExitVehicle(plateNumber string) (string, error) {
 
 	if !utils.ValidatePlateNumber(plateNumber) {
