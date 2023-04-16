@@ -2,36 +2,48 @@ package controller
 
 import (
 	"errors"
+	"fmt"
 	"github.com/fzbian/parking/models"
 	"github.com/fzbian/parking/utils"
 	"gorm.io/gorm"
+	"time"
 )
 
-func ParkingVehicle(request models.Vehicles) (error) {
+func ParkingVehicle(request models.Vehicles) (string, error) {
 
 	vehicle, err := GetOrCreateVehicle(request)
 	if err != nil {
 		panic(err)
 	}
 
+	if !utils.ValidatePlateNumber(request.PlateNumber) {
+		return "", errors.New("El formato de la placa no es valido")
+	}
+
 	IsIn := IsInParking(request.PlateNumber)
 	if IsIn {
-		return errors.New("vehicle is already in the parking lot")
+		return "", errors.New("El vehiculo ya se encuentra estacionado")
 	}
 
 	spot := GetAvailableSpot(vehicle.VehicleType)
 
 	if spot.ID == 0 {
-		return errors.New("parking lot is full")
+		return "", errors.New("El parqueadero esta lleno")
 	}
+
+	fmt.Println("EntryTime: ", time.Now())
+	fmt.Println("ExitTime: ", time.Time{})
 
 	utils.Db.Table("vehicles_spots").Create(&models.VehiclesSpots{
 		VehicleId: vehicle.Id,
 		Spot:      spot.ID,
+		EntryTime: time.Now(),
 	})
 
 	utils.Db.Table("spots").Where("id = ?", spot.ID).Update("in_use", true)
-	return nil
+
+	SuccesfullMessage := fmt.Sprintf("El vehiculo %s ha sido estacionado en la bahia %d ubicada en la zona %s.", vehicle.PlateNumber, spot.ID, spot.Zone)
+	return SuccesfullMessage, nil
 }
 
 func GetOrCreateVehicle(req models.Vehicles) (models.Vehicles, error) {
@@ -72,17 +84,26 @@ func IsInParking(plate string) bool {
 		return false
 	}
 
-	var vehicleSpot models.VehiclesSpots
-	resultVehiclesSpots := utils.Db.Table("vehicles_spots").Where("vehicle_id = ?", vehicles.Id).First(&vehicleSpot)
-	if errors.Is(resultVehiclesSpots.Error, gorm.ErrRecordNotFound) {
-		return false
+	if vehicles.Id > 0 {
+		var vehicleSpot models.VehiclesSpots
+		resultVehiclesSpots := utils.Db.Table("vehicles_spots").Where("vehicle_id = ?", vehicles.Id).First(&vehicleSpot)
+		if errors.Is(resultVehiclesSpots.Error, gorm.ErrRecordNotFound) {
+			return false
+		}
+		return true
 	}
-	return true
+
+	return false
 }
 
-func ExitVehicle(plateNumber string) error {
+func ExitVehicle(plateNumber string) (string, error) {
+
+	if !utils.ValidatePlateNumber(plateNumber) {
+		return "", errors.New("El formato de la placa no es valido")
+	}
+
 	if !IsInParking(plateNumber) {
-		return errors.New("vehicle is not in the parking lot")
+		return "", errors.New("El vehiculo no se encuentra estacionado")
 	}
 
 	var vehicle models.Vehicles
@@ -90,7 +111,7 @@ func ExitVehicle(plateNumber string) error {
 
 	var vehicleSpot models.VehiclesSpots
 	utils.Db.Table("vehicles_spots").Where("vehicle_id = ?", vehicle.Id).First(&vehicleSpot)
-	utils.Db.Table("vehicles_spots").Where("vehicle_id = ?", vehicle.Id).Delete(&vehicleSpot)
+	utils.Db.Table("vehicles_spots").Where("vehicle_id = ?", vehicleSpot.VehicleId).Update("exit_time", time.Now())
 	utils.Db.Table("spots").Where("id = ?", vehicleSpot.Spot).Update("in_use", false)
 
 	var nextVehicleSpot models.VehiclesSpots
@@ -98,5 +119,5 @@ func ExitVehicle(plateNumber string) error {
 		utils.Db.Table("vehicles_spots").Where("id = ?", nextVehicleSpot.Id).Update("spot", vehicleSpot.Spot)
 	}
 
-	return nil
+	return "El vehiculo ha salido correctamente", nil
 }
