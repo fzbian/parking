@@ -38,9 +38,6 @@ func ParkingVehicle(request models.Vehicles) (string, error) {
 		return "", errors.New("El parqueadero esta lleno")
 	}
 
-	fmt.Println("EntryTime: ", time.Now())
-	fmt.Println("ExitTime: ", time.Time{})
-
 	utils.Db.Table("vehicles_spots").Create(&models.VehiclesSpots{
 		VehicleId: vehicle.Id,
 		Spot:      spot.ID,

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
@@ -13,15 +11,6 @@ import (
 )
 
 func main() {
-
-	testdata := views.GetData()
-	jsonData, err := json.Marshal(testdata)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	fmt.Println(string(jsonData))
 
 	app := app.New()
 
