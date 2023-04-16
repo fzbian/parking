@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"github.com/fzbian/parking/enums"
 	"github.com/fzbian/parking/models"
 	"github.com/fzbian/parking/utils"
 	"gorm.io/gorm"
@@ -11,13 +12,19 @@ import (
 
 func ParkingVehicle(request models.Vehicles) (string, error) {
 
+	if !utils.ValidatePlateNumber(request.PlateNumber) {
+		return "", errors.New("El formato de la placa no es valido")
+	}
+
+	VehiclesTypes := enums.GetVehicleTypes()
+	ValidVehicleType := utils.ValidateVehicleType(request.VehicleType, VehiclesTypes)
+	if !ValidVehicleType {
+		return "", errors.New("El tipo de vehiculo no es valido")
+	}
+
 	vehicle, err := GetOrCreateVehicle(request)
 	if err != nil {
 		panic(err)
-	}
-
-	if !utils.ValidatePlateNumber(request.PlateNumber) {
-		return "", errors.New("El formato de la placa no es valido")
 	}
 
 	IsIn := IsInParking(request.PlateNumber)
@@ -47,17 +54,6 @@ func ParkingVehicle(request models.Vehicles) (string, error) {
 }
 
 func GetOrCreateVehicle(req models.Vehicles) (models.Vehicles, error) {
-	validVehicleTypes := []string{"NORMAL", "VIP", "DISCAPACITADO", "EMERGENCIA", "PROVEEDOR"}
-	isValidVehicleType := false
-	for _, vt := range validVehicleTypes {
-		if req.VehicleType == vt {
-			isValidVehicleType = true
-			break
-		}
-	}
-	if !isValidVehicleType {
-		return req, errors.New("invalid vehicle type")
-	}
 
 	vehicles := models.Vehicles{}
 

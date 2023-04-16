@@ -24,3 +24,12 @@ func ValidatePlateNumber(cadena string) bool {
 	}
 	return true
 }
+
+func ValidateVehicleType(s string, list []string) bool {
+	for _, v := range list {
+		if s == v {
+			return true
+		}
+	}
+	return false
+}
