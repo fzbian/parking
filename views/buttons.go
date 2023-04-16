@@ -25,10 +25,9 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 					VehicleType: VehicleTypeEntry.Selected,
 				})
 				NewPopUp(message, window)
+				RefreshTable() // TODO: Didn't work
 				if err != nil {
 					NewPopUp(err.Error(), window)
-				} else {
-					UpdateTable()
 				}
 			}
 			AddVehicleForm.Hide()

@@ -54,9 +54,7 @@ func GetVehiclesTable() *widget.Table {
 	return table
 }
 
-// Update the table with the new data and refresh the window
-func UpdateTable() {
-	data := GetData()
-	table := GetTable(data)
-	table.Refresh()
+func RefreshTable() {
+	VehicleTable := GetVehiclesTable()
+	VehicleTable.Refresh()
 }
