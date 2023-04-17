@@ -9,7 +9,7 @@ import (
 	"github.com/fzbian/parking/utils"
 )
 
-func GetData() [][]string {
+func GetTable() *widget.Table {
 	var spots []models.Spot
 	utils.Db.Find(&spots)
 
@@ -31,10 +31,6 @@ func GetData() [][]string {
 		}
 	}
 
-	return data
-}
-
-func GetTable(data [][]string) *widget.Table {
 	table := widget.NewTable(
 		func() (int, int) {
 			return len(data) + 1, len(data[0])
@@ -69,15 +65,4 @@ func GetTable(data [][]string) *widget.Table {
 	table.SetColumnWidth(4, 60)
 
 	return table
-}
-
-func GetVehiclesTable() *widget.Table {
-	data := GetData()
-	table := GetTable(data)
-	return table
-}
-
-func RefreshTable() {
-	VehicleTable := GetVehiclesTable()
-	VehicleTable.Refresh()
 }

@@ -25,6 +25,7 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 					VehicleType: VehicleTypeEntry.Selected,
 				})
 				NewPopUp(message, window)
+				// Refresh table
 				if err != nil {
 					NewPopUp(err.Error(), window)
 				}
@@ -47,6 +48,7 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 					NewPopUp(err.Error(), window)
 				}
 				NewPopUp(message, window)
+				// Refresh table
 			}
 			ExitVehicleForm.Hide()
 		}, window)
@@ -60,7 +62,6 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 
 func RightButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 	ExportRecordsButton := widget.NewButton("Exportar registros", func() {
-		// TODO: Exportar registros funcion
 		NewPopUp("Funcion pendiente", window)
 	})
 

@@ -9,8 +9,8 @@ import (
 
 func GetMainContainer(window fyne.Window, logo fyne.Resource) *fyne.Container {
 
+	VehicleListTable := GetTable()
 	LogoObject := canvas.NewImageFromResource(logo)
-	VehicleTable := GetVehiclesTable()
 	AddVehicleButton, ExitVehicleButton := LeftButtons(window)
 	ExportRecordsButton, ExitWindowButton := RightButtons(window)
 
@@ -29,7 +29,7 @@ func GetMainContainer(window fyne.Window, logo fyne.Resource) *fyne.Container {
 		fyne.Size{
 			Width:  900,
 			Height: 650,
-		}), VehicleTable)
+		}), VehicleListTable)
 
 	RightContainer := container.New(layout.NewVBoxLayout(),
 		ExportRecordsButton,
