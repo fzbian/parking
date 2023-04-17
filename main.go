@@ -3,9 +3,6 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 	"github.com/fzbian/parking/assets"
 	"github.com/fzbian/parking/views"
 )
@@ -24,38 +21,7 @@ func main() {
 	LogoResource := assets.GetIcon()
 	window.SetIcon(LogoResource)
 
-	LogoObject := canvas.NewImageFromResource(LogoResource)
-	LogoContainer := container.New(layout.NewGridWrapLayout(fyne.Size{
-		Width:  175,
-		Height: 175,
-	}), LogoObject)
-
-	VehicleTable := views.GetVehiclesTable()
-	AddVehicleButton, ExitVehicleButton := views.LeftButtons(window)
-	ExportRecordsButton, ExitWindowButton := views.RightButtons(window)
-
-	LeftContainer := container.New(layout.NewVBoxLayout(),
-		AddVehicleButton,
-		ExitVehicleButton,
-		LogoContainer,
-	)
-
-	MidContainer := container.New(layout.NewGridWrapLayout(
-		fyne.Size{
-			Width:  900,
-			Height: 650,
-		}), VehicleTable)
-
-	RightContainer := container.New(layout.NewVBoxLayout(),
-		ExportRecordsButton,
-		ExitWindowButton,
-	)
-
-	MainContainer := container.New(layout.NewHBoxLayout(),
-		LeftContainer,
-		MidContainer,
-		RightContainer,
-	)
+	MainContainer := views.GetMainContainer(window, LogoResource)
 
 	window.SetContent(MainContainer)
 	window.ShowAndRun()
