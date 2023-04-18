@@ -1,28 +1,22 @@
 package utils
 
-func ValidatePlateNumber(cadena string) bool {
+import (
+	"errors"
+	"regexp"
+	"strings"
+)
+
+func ValidatePlateNumber(cadena string) error {
+	cadena = strings.ToUpper(cadena)
+
 	if len(cadena) != 6 {
-		return false
+		return errors.New("plate number must be 6 characters long")
 	}
 
-	for i := 0; i < 3; i++ {
-		if cadena[i] < 'A' || cadena[i] > 'Z' {
-			return false
-		}
+	if regexp.MustCompile(`^[A-Z]{3}[0-9]{3}$`).MatchString(cadena) == false {
+		return errors.New("plate number must be in the format ABC123")
 	}
-
-	for i := 3; i < 6; i++ {
-		if cadena[i] < '0' || cadena[i] > '9' {
-			return false
-		}
-	}
-
-	for i := 0; i < 3; i++ {
-		if cadena[i] >= 'a' && cadena[i] <= 'z' {
-			return false
-		}
-	}
-	return true
+	return nil
 }
 
 func ValidateVehicleType(s string, list []string) bool {

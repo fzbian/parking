@@ -7,11 +7,12 @@ import (
 	"fyne.io/fyne/v2/layout"
 )
 
-func GetMainContainer(window fyne.Window, logo fyne.Resource) *fyne.Container {
+var MainContainer *fyne.Container
 
+func GetMainContainer(window fyne.Window, logo fyne.Resource) *fyne.Container {
 	VehicleListTable := GetTable()
 	LogoObject := canvas.NewImageFromResource(logo)
-	AddVehicleButton, ExitVehicleButton := LeftButtons(window)
+	AddVehicleButton, ExitVehicleButton := LeftButtons(window, VehicleListTable)
 	ExportRecordsButton, ExitWindowButton := RightButtons(window)
 
 	LogoContainer := container.New(layout.NewGridWrapLayout(fyne.Size{
@@ -36,7 +37,7 @@ func GetMainContainer(window fyne.Window, logo fyne.Resource) *fyne.Container {
 		ExitWindowButton,
 	)
 
-	MainContainer := container.New(layout.NewHBoxLayout(),
+	MainContainer = container.New(layout.NewHBoxLayout(),
 		LeftContainer,
 		MidContainer,
 		RightContainer,

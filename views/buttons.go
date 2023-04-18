@@ -2,13 +2,15 @@ package views
 
 import (
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fzbian/parking/controller"
 	"github.com/fzbian/parking/models"
 )
 
-func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
+func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widget.Button) {
 
 	AddVehicleForm, AddVehiclePlateEntry, VehicleTypeEntry := AddVehicleDialog()
 	ExitVehicleForm, ExitVehiclePlateEntry := ExitVehicleDialog()
@@ -24,11 +26,18 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 					PlateNumber: AddVehiclePlateEntry.Text,
 					VehicleType: VehicleTypeEntry.Selected,
 				})
-				NewPopUp(message, window)
-				// Refresh table
 				if err != nil {
 					NewPopUp(err.Error(), window)
+					return
 				}
+				NewPopUp(message, window)
+				table = GetTable()
+				MidContainer := container.New(layout.NewGridWrapLayout(
+					fyne.Size{
+						Width:  900,
+						Height: 650,
+					}), table)
+				MainContainer.Objects[1] = MidContainer
 			}
 			AddVehicleForm.Hide()
 		}, window)
@@ -46,9 +55,16 @@ func LeftButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 				message, err := controller.ExitVehicle(ExitVehiclePlateEntry.Text)
 				if err != nil {
 					NewPopUp(err.Error(), window)
+					return
 				}
+				table = GetTable()
+				MidContainer := container.New(layout.NewGridWrapLayout(
+					fyne.Size{
+						Width:  900,
+						Height: 650,
+					}), table)
+				MainContainer.Objects[1] = MidContainer
 				NewPopUp(message, window)
-				// Refresh table
 			}
 			ExitVehicleForm.Hide()
 		}, window)

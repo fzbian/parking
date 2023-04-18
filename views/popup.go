@@ -1,9 +1,10 @@
 package views
 
 import (
+	"time"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
-	"time"
 )
 
 func NewPopUp(message string, window fyne.Window) {
@@ -12,7 +13,7 @@ func NewPopUp(message string, window fyne.Window) {
 	popupWindow := widget.NewModalPopUp(popUpContent, canvas)
 
 	go func() {
-		<-time.After(3 * time.Second)
+		<-time.After(time.Millisecond * 1500)
 		popupWindow.Hide()
 		canvas.Refresh(popupWindow)
 	}()

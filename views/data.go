@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fzbian/parking/controller"
@@ -16,18 +15,11 @@ func GetTable() *widget.Table {
 	var data [][]string
 
 	for _, u := range spots {
-		var text string
 		if u.InUse {
-			text = "Ocupado"
-			plateNumber, err := controller.GetVehiclePlateNumberBySpotId(u.ID)
-			if err == nil {
-				data = append(data, []string{fmt.Sprint(u.ID), u.Type, u.Zone, text, plateNumber})
-			} else {
-				data = append(data, []string{fmt.Sprint(u.ID), u.Type, u.Zone, text, ""})
-			}
+			plateNumber := controller.GetVehiclePlateNumberBySpotId(u.ID)
+			data = append(data, []string{u.GetIDString(), u.Type, u.Zone, "Ocupado", plateNumber})
 		} else {
-			text = "Libre"
-			data = append(data, []string{fmt.Sprint(u.ID), u.Type, u.Zone, text, ""})
+			data = append(data, []string{u.GetIDString(), u.Type, u.Zone, "Libre", ""})
 		}
 	}
 
