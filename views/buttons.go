@@ -50,7 +50,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 
 		ExitVehiclePlateEntry.SetText("")
 
-		dialog.ShowCustomConfirm("Salida de vehiculo", "Agregar", "Cancelar", ExitVehicleForm, func(b bool) {
+		dialog.ShowCustomConfirm("Salida de vehiculo", "Salida", "Cancelar", ExitVehicleForm, func(b bool) {
 			if b {
 				message, err := controller.ExitVehicle(ExitVehiclePlateEntry.Text)
 				if err != nil {
