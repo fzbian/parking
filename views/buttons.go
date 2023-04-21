@@ -1,6 +1,7 @@
 package views
 
 import (
+	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
@@ -76,14 +77,55 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 	return AddVehicleButton, ExitVehicleButton
 }
 
-func RightButtons(window fyne.Window) (*widget.Button, *widget.Button) {
-	ExportRecordsButton := widget.NewButton("Exportar registros", func() {
-		dialog.ShowInformation("Error", "Funcion pendiente", window)
+func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.Button) {
+	RecordsVehiclesTypeForm, VehicleTypeEntry := RecordsVehiclesTypeDialog()
+	RecordsZoneForm, ZoneEntry := RecordsZoneDialog()
+
+	ReportsByVehicleType := widget.NewButton("Reporte por tipo de vehiculo", func() {
+
+		VehicleTypeEntry.SetSelected("")
+
+		dialog.ShowCustomConfirm("Reporte por tipo de vehiculo", "Generar", "Cancelar", RecordsVehiclesTypeForm, func(b bool) {
+			if b {
+				result, err := controller.GetVehiclesBySpotType(VehicleTypeEntry.Selected)
+				if err != nil {
+					dialog.ShowInformation("Error", err.Error(), window)
+					return
+				}
+				message := fmt.Sprintf("En las ultimas 24 horas, %d vehiculos de tipo %s, ingresaron a el parqueadero.", len(result), VehicleTypeEntry.Selected)
+				dialog.ShowInformation("Informacion", message, window)
+			}
+			RecordsVehiclesTypeForm.Hide()
+		}, window)
+
+		window.CenterOnScreen()
+		RecordsVehiclesTypeForm.Show()
+	})
+
+	ReportsByZone := widget.NewButton("Reporte por zona", func() {
+
+		ZoneEntry.SetSelected("")
+
+		dialog.ShowCustomConfirm("Reporte por zona", "Generar", "Cancelar", RecordsZoneForm, func(b bool) {
+			if b {
+				result, err := controller.GetVehiclesByZoneType(ZoneEntry.Selected)
+				if err != nil {
+					dialog.ShowInformation("Error", err.Error(), window)
+					return
+				}
+				message := fmt.Sprintf("En las ultimas 24 horas, %d vehiculos en la zona %s ingresaron a el parqueadero.", len(result), ZoneEntry.Selected)
+				dialog.ShowInformation("Informacion", message, window)
+			}
+			RecordsZoneForm.Hide()
+		}, window)
+
+		window.CenterOnScreen()
+		RecordsZoneForm.Show()
 	})
 
 	ExitButton := widget.NewButton("Salir", func() {
 		window.Close()
 	})
 
-	return ExportRecordsButton, ExitButton
+	return ReportsByVehicleType, ReportsByZone, ExitButton
 }

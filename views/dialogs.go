@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -33,14 +32,28 @@ func ExitVehicleDialog() (fyneForm *widget.Form, vehiclePlateExit *widget.Entry)
 	return ExitVehicleForm, VehiclePlateExit
 }
 
-func ExportRecordsDialog(window fyne.Window) {
-	label := widget.NewLabel("Exportar registros")
-	fyneForm := &widget.Form{
-		Items: []*widget.FormItem{
-			{Text: "Exportar", Widget: label},
-		},
+func RecordsVehiclesTypeDialog() (fyneForm *widget.Form, VehicleType *widget.RadioGroup) {
+	VehicleTypeEntry := widget.NewRadioGroup([]string{"NORMAL", "VIP", "DISCAPACITADO", "EMERGENCIA", "PROVEEDOR"}, nil)
+
+	RecordsVehiclesTypeItems := []*widget.FormItem{
+		widget.NewFormItem("Tipo de vehiculo", VehicleTypeEntry),
 	}
 
-	window.CenterOnScreen()
-	fyneForm.Show()
+	RecordsVehiclesTypeForm := &widget.Form{
+		Items: RecordsVehiclesTypeItems,
+	}
+	return RecordsVehiclesTypeForm, VehicleTypeEntry
+}
+
+func RecordsZoneDialog() (fyneForm *widget.Form, zone *widget.RadioGroup) {
+	ZoneEntry := widget.NewRadioGroup([]string{"A", "B", "C"}, nil)
+
+	RecordsZoneItems := []*widget.FormItem{
+		widget.NewFormItem("Zona", ZoneEntry),
+	}
+
+	RecordsZoneForm := &widget.Form{
+		Items: RecordsZoneItems,
+	}
+	return RecordsZoneForm, ZoneEntry
 }

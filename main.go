@@ -29,8 +29,6 @@ func main() {
 }
 
 /* TODO
-- Generar reporte de número de vehículos que ingresaron por tipo de Bahía
-- Generar reporte de número de vehículos que ingresaron por Zona
 - Generar reporte de recoleccion de dinero generado por proveedores que duraron mas del tiempo dado
 - Generar reporte tiempo total de uso por zona, para establecer cuál fue la zona más utilizada
 - Generar ticket al momento de ingresar y al momento de salir
