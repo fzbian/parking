@@ -33,6 +33,11 @@ func ParkingVehicle(request models.Vehicles) (string, error) {
 		return "", errors.New("El vehiculo ya se encuentra estacionado")
 	}
 
+	vehicles := GetVehicles(vehicle.Id)
+	if request.VehicleType != vehicles.VehicleType {
+		return "", errors.New("Este vehiculo ya se encuentra en la base de datos y el tipo de vehiculo no coinciden.")
+	}
+
 	spot := GetAvailableSpot(vehicle.VehicleType)
 
 	if spot.ID == 0 {
@@ -78,6 +83,13 @@ func GetVehicleInSpot(idVehicle int) models.VehiclesSpots {
 	utils.Db.Table("vehicles_spots").Where("vehicle_id = ? AND exit_time IS NULL", idVehicle).First(&vehicleSpot)
 
 	return vehicleSpot
+}
+
+func GetVehicles(idVehicle int) models.Vehicles {
+	var vehicles models.Vehicles
+	utils.Db.Table("vehicles").Where("id = ?", idVehicle).First(&vehicles)
+
+	return vehicles
 }
 
 func GetVehiclePlateNumberBySpotId(spotId int) string {
