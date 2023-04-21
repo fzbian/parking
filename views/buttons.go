@@ -27,10 +27,10 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 					VehicleType: VehicleTypeEntry.Selected,
 				})
 				if err != nil {
-					NewPopUp(err.Error(), window)
+					dialog.ShowInformation("Error", err.Error(), window)
 					return
 				}
-				NewPopUp(message, window)
+				dialog.ShowInformation("Informacion", message, window)
 				table = GetTable()
 				MidContainer := container.New(layout.NewGridWrapLayout(
 					fyne.Size{
@@ -54,7 +54,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 			if b {
 				message, err := controller.ExitVehicle(ExitVehiclePlateEntry.Text)
 				if err != nil {
-					NewPopUp(err.Error(), window)
+					dialog.ShowInformation("Error", err.Error(), window)
 					return
 				}
 				table = GetTable()
@@ -64,7 +64,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 						Height: 650,
 					}), table)
 				MainContainer.Objects[1] = MidContainer
-				NewPopUp(message, window)
+				dialog.ShowInformation("Informacion", message, window)
 			}
 			ExitVehicleForm.Hide()
 		}, window)
@@ -78,7 +78,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 
 func RightButtons(window fyne.Window) (*widget.Button, *widget.Button) {
 	ExportRecordsButton := widget.NewButton("Exportar registros", func() {
-		NewPopUp("Funcion pendiente", window)
+		dialog.ShowInformation("Error", "Funcion pendiente", window)
 	})
 
 	ExitButton := widget.NewButton("Salir", func() {

@@ -29,7 +29,6 @@ func main() {
 }
 
 /* TODO
-- Al ingresar la placa de un vehiculo, buscar si existe en la base de datos y autorrellenar el tipo de vehiculo y bloquear el tipo
 - Generar reporte de número de vehículos que ingresaron por tipo de Bahía
 - Generar reporte de número de vehículos que ingresaron por Zona
 - Generar reporte de recoleccion de dinero generado por proveedores que duraron mas del tiempo dado
