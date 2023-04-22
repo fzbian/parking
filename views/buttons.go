@@ -98,7 +98,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 	return AddVehicleButton, ExitVehicleButton, ExitAllVehicles
 }
 
-func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.Button, *widget.Button) {
+func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.Button, *widget.Button, *widget.Button) {
 	RecordsVehiclesTypeForm, VehicleTypeEntry := RecordsVehiclesTypeDialog()
 	RecordsZoneForm, ZoneEntry := RecordsZoneDialog()
 
@@ -154,9 +154,19 @@ func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.B
 		dialog.ShowInformation("Informacion", fmt.Sprintf("En total se han recolectado: $%d pesos.", len(toPay)*5000), window)
 	})
 
+	ZoneMostUsed := widget.NewButton("La zona mas utilizada", func() {
+
+		zoneMostUsed, err := controller.GetMostUsedZone()
+		if err != nil {
+			dialog.ShowInformation("Error", err.Error(), window)
+			return
+		}
+		dialog.ShowInformation("Informacion", fmt.Sprintf("La zona mas utilizada ha sido la zona %s.", zoneMostUsed), window)
+	})
+
 	ExitButton := widget.NewButton("Salir", func() {
 		window.Close()
 	})
 
-	return ReportsByVehicleType, ReportsByZone, ReportsProvidersCollection, ExitButton
+	return ReportsByVehicleType, ReportsByZone, ReportsProvidersCollection, ZoneMostUsed, ExitButton
 }

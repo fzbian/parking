@@ -13,7 +13,7 @@ func GetMainContainer(window fyne.Window, logo fyne.Resource) *fyne.Container {
 	VehicleListTable := GetTable()
 	LogoObject := canvas.NewImageFromResource(logo)
 	AddVehicleButton, ExitVehicleButton, ExitAllVehicles := LeftButtons(window, VehicleListTable)
-	ReportsByVehicleType, ReportsByZoneType, ReportsProvidersCollection, ExitButton := RightButtons(window)
+	ReportsByVehicleType, ReportsByZoneType, ReportsProvidersCollection, ZoneMostUsed, ExitButton := RightButtons(window)
 
 	LogoContainer := container.New(layout.NewGridWrapLayout(fyne.Size{
 		Width:  175,
@@ -36,6 +36,7 @@ func GetMainContainer(window fyne.Window, logo fyne.Resource) *fyne.Container {
 		ReportsByVehicleType,
 		ReportsByZoneType,
 		ReportsProvidersCollection,
+		ZoneMostUsed,
 		ExitAllVehicles,
 		ExitButton,
 	)

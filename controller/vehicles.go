@@ -13,7 +13,7 @@ import (
 
 func ParkingVehicle(request models.Vehicles) (string, error) {
 
-	if err := request.ValidatePlateNumber(); err != nil {
+	if err := utils.ValidatePlateNumber(request.PlateNumber); err != nil {
 		return "", err
 	}
 
@@ -92,6 +92,7 @@ func GetAvailableSpot(spotType string) models.Spot {
 	return spot
 }
 
+// Esta funcion hace algo
 func GetZoneFromVehicleSpot(idVehicle int) string {
 	var vehicleSpot models.VehiclesSpots
 	utils.Db.Table("vehicles_spots").
@@ -239,7 +240,6 @@ func ExitVehicle(plateNumber string) (string, error) {
 	return "El vehiculo ha salido correctamente", nil
 }
 
-// funcion para darle salida a todos los vehiculos que esten estacionados en el parqueadero
 func ExitAllVehicles() (string, error) {
 	vehiclesSpots := GetVehiclesSpots()
 
@@ -260,4 +260,54 @@ func ExitAllVehicles() (string, error) {
 	}
 
 	return "Todos los vehiculos han salido correctamente", nil
+}
+
+// Generar reporte tiempo total de uso por zona, para establecer cuál fue la zona más utilizada
+func GetTotalTimeByZone(request models.Spot) (string, error) {
+	var vehiclesSpots []models.VehiclesSpots
+	subquery := utils.Db.Table("spots").
+		Where("zone = ?", request.Zone).
+		Select("id")
+
+	result := utils.Db.Table("vehicles_spots").
+		Where("spot IN (?)", subquery).
+		Find(&vehiclesSpots)
+
+	if result.Error != nil {
+		return "", result.Error
+	}
+
+	var totalTime time.Duration
+	for _, vehicleSpot := range vehiclesSpots {
+		totalTime += vehicleSpot.ExitTime.Sub(vehicleSpot.EntryTime)
+	}
+
+	return totalTime.String(), nil
+}
+
+func GetMostUsedZone() (string, error) {
+	var mostUsedZone string
+	var mostUsedZoneTime time.Duration
+
+	zone := "A"
+	for i := 0; i < 3; i++ {
+		zoneTime, err := GetTotalTimeByZone(models.Spot{Zone: zone})
+		if err != nil {
+			return "", err
+		}
+
+		zoneTimeDuration, err := time.ParseDuration(zoneTime)
+		if err != nil {
+			return "", err
+		}
+
+		if zoneTimeDuration > mostUsedZoneTime {
+			mostUsedZone = zone
+			mostUsedZoneTime = zoneTimeDuration
+		}
+
+		zone = string(int(zone[0]) + 1)
+	}
+
+	return mostUsedZone, nil
 }
