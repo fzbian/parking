@@ -11,7 +11,7 @@ import (
 	"github.com/fzbian/parking/models"
 )
 
-func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widget.Button) {
+func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widget.Button, *widget.Button) {
 
 	AddVehicleForm, AddVehiclePlateEntry, VehicleTypeEntry := AddVehicleDialog()
 	ExitVehicleForm, ExitVehiclePlateEntry := ExitVehicleDialog()
@@ -74,7 +74,28 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 		ExitVehicleForm.Show()
 	})
 
-	return AddVehicleButton, ExitVehicleButton
+	ExitAllVehicles := widget.NewButton("Salida a todos los vehiculos", func() {
+
+		dialog.ShowCustomConfirm("Salida a todos los vehiculos", "Salida", "Cancelar", widget.NewLabel("¿Esta seguro que desea sacar a todos los vehiculos del parqueadero?"), func(b bool) {
+			if b {
+				message, err := controller.ExitAllVehicles()
+				if err != nil {
+					dialog.ShowInformation("Error", err.Error(), window)
+					return
+				}
+				table = GetTable()
+				MidContainer := container.New(layout.NewGridWrapLayout(
+					fyne.Size{
+						Width:  900,
+						Height: 650,
+					}), table)
+				MainContainer.Objects[1] = MidContainer
+				dialog.ShowInformation("Informacion", message, window)
+			}
+		}, window)
+	})
+
+	return AddVehicleButton, ExitVehicleButton, ExitAllVehicles
 }
 
 func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.Button, *widget.Button) {

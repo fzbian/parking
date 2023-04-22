@@ -31,6 +31,5 @@ func main() {
 /* TODO
 - Generar reporte tiempo total de uso por zona, para establecer cuál fue la zona más utilizada
 - Funcion para vaciar el parqueadero
-- Funcion para interactuar con otros sistemas (facturas)
 - Mostrar por sonido cuando el parqueadero este por llenarse y cuando este lleno
 */

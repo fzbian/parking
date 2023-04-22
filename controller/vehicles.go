@@ -238,3 +238,26 @@ func ExitVehicle(plateNumber string) (string, error) {
 
 	return "El vehiculo ha salido correctamente", nil
 }
+
+// funcion para darle salida a todos los vehiculos que esten estacionados en el parqueadero
+func ExitAllVehicles() (string, error) {
+	vehiclesSpots := GetVehiclesSpots()
+
+	for _, vehicleSpot := range vehiclesSpots {
+		vehicle := GetVehicles(vehicleSpot.VehicleId)
+		Zone := GetZoneFromVehicleSpot(vehicle.Id)
+
+		utils.Db.Table("vehicles_spots").
+			Where("vehicle_id = ? AND exit_time IS NULL", vehicleSpot.VehicleId).
+			Update("exit_time", time.Now())
+
+		utils.Db.Table("spots").
+			Where("id = ?", vehicleSpot.Spot).
+			Update("in_use", false)
+
+		EntryTime := vehicleSpot.EntryTime.Format("15:04:05")
+		CreateExitTicket(vehicle.PlateNumber, vehicle.VehicleType, Zone, EntryTime, vehicleSpot.Spot)
+	}
+
+	return "Todos los vehiculos han salido correctamente", nil
+}
