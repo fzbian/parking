@@ -89,7 +89,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 						Width:  900,
 						Height: 650,
 					}), table)
-				MainContainer.Objects[1] = MidContainer
+				MainContainer = MidContainer
 				dialog.ShowInformation("Informacion", message, window)
 			}
 		}, window)
@@ -149,6 +149,10 @@ func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.B
 		toPay, err := controller.GetVehiclesProvidersToPay()
 		if err != nil {
 			dialog.ShowInformation("Error", err.Error(), window)
+			return
+		}
+		if len(toPay) == 0 {
+			dialog.ShowInformation("Error", "No hay proveedores que hayan ingresado en las ultimas 24 horas.", window)
 			return
 		}
 		dialog.ShowInformation("Informacion", fmt.Sprintf("En total se han recolectado: $%d pesos.", len(toPay)*5000), window)

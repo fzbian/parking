@@ -1,27 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"github.com/fzbian/parking/assets"
-	"github.com/fzbian/parking/controller"
 	"github.com/fzbian/parking/views"
 )
 
 func main() {
-
-	//zone, err := controller.GetTotalTimeByZone(models.Spot{Zone: "A"})
-	//if err != nil {
-	//	panic(err)
-	//}
-	//fmt.Println(zone)
-
-	zone, err := controller.GetMostUsedZone()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Print(zone)
 
 	app := app.New()
 
