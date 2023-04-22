@@ -4,13 +4,10 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"github.com/fzbian/parking/assets"
-	"github.com/fzbian/parking/controller"
 	"github.com/fzbian/parking/views"
 )
 
 func main() {
-
-	controller.CreateEntryTicket("ABC123", "NORMAL", "A", 1)
 
 	app := app.New()
 
@@ -32,9 +29,7 @@ func main() {
 }
 
 /* TODO
-- Generar reporte de recoleccion de dinero generado por proveedores que duraron mas del tiempo dado
 - Generar reporte tiempo total de uso por zona, para establecer cuál fue la zona más utilizada
-- Generar ticket al momento de ingresar y al momento de salir
 - Funcion para vaciar el parqueadero
 - Funcion para interactuar con otros sistemas (facturas)
 - Mostrar por sonido cuando el parqueadero este por llenarse y cuando este lleno

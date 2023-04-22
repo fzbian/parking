@@ -170,6 +170,27 @@ func GetVehiclesByZoneType(zoneType string) ([]models.Vehicles, error) {
 	return vehicles, nil
 }
 
+func GetVehiclesProvidersToPay() ([]models.Vehicles, error) {
+	var vehicles []models.Vehicles
+	subquery := utils.Db.Table("vehicles").
+		Where("vehicle_type = 'PROVEEDOR'").
+		Select("id")
+
+	subquery2 := utils.Db.Table("vehicles_spots").
+		Where("vehicle_id IN (?) AND entry_time < ?", subquery, time.Now().Add(-30*time.Minute)).
+		Select("vehicle_id")
+
+	result := utils.Db.Table("vehicles").
+		Where("id IN (?)", subquery2).
+		Find(&vehicles)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return vehicles, nil
+}
+
 func GetVehiclePlateNumberBySpotId(spotId int) string {
 	var vehicleSpot models.VehiclesSpots
 	utils.Db.Table("vehicles_spots").
