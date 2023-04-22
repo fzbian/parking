@@ -4,10 +4,13 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"github.com/fzbian/parking/assets"
+	"github.com/fzbian/parking/controller"
 	"github.com/fzbian/parking/views"
 )
 
 func main() {
+
+	controller.CreateEntryTicket("ABC123", "NORMAL", "A", 1)
 
 	app := app.New()
 

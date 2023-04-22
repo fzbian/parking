@@ -58,6 +58,8 @@ func ParkingVehicle(request models.Vehicles) (string, error) {
 	SuccessfullyMessage := fmt.Sprintf("El vehiculo %s ha sido estacionado en la bahia %d ubicada en la zona %s.",
 		vehicle.PlateNumber, spot.ID, spot.Zone)
 
+	CreateEntryTicket(vehicle.PlateNumber, vehicle.VehicleType, spot.Zone, spot.ID)
+
 	return SuccessfullyMessage, nil
 }
 
@@ -88,6 +90,20 @@ func GetAvailableSpot(spotType string) models.Spot {
 			Order("id")
 	}
 	return spot
+}
+
+func GetZoneFromVehicleSpot(idVehicle int) string {
+	var vehicleSpot models.VehiclesSpots
+	utils.Db.Table("vehicles_spots").
+		Where("vehicle_id = ? AND exit_time IS NULL", idVehicle).
+		First(&vehicleSpot)
+
+	var spot models.Spot
+	utils.Db.Table("spots").
+		Where("id = ?", vehicleSpot.Spot).
+		First(&spot)
+
+	return spot.Zone
 }
 
 func GetVehicleInSpot(idVehicle int) models.VehiclesSpots {
@@ -186,6 +202,8 @@ func ExitVehicle(plateNumber string) (string, error) {
 		return "", errors.New("El vehiculo no se encuentra estacionado")
 	}
 
+	Zone := GetZoneFromVehicleSpot(vehicle.Id)
+
 	utils.Db.Table("vehicles_spots").
 		Where("vehicle_id = ? AND exit_time IS NULL", vehicleSpot.VehicleId).
 		Update("exit_time", time.Now())
@@ -193,6 +211,9 @@ func ExitVehicle(plateNumber string) (string, error) {
 	utils.Db.Table("spots").
 		Where("id = ?", vehicleSpot.Spot).
 		Update("in_use", false)
+
+	EntryTime := vehicleSpot.EntryTime.Format("15:04:05")
+	CreateExitTicket(vehicle.PlateNumber, vehicle.VehicleType, Zone, EntryTime, vehicleSpot.Spot)
 
 	return "El vehiculo ha salido correctamente", nil
 }
