@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	// Main DB connection
+	// Db main connection
 	Db = config.Connect()
 )
 
@@ -16,26 +16,26 @@ func CreateSpots() {
 	for i := 0; i < 30; i++ {
 		a := &models.Spot{Zone: "A"}
 		if i >= 0 && i <= 4 {
-			a.Type = "VIP"
+			a.Type = "Vip"
 		} else {
-			a.Type = "NORMAL"
+			a.Type = "Normal"
 		}
 		Db.Create(a)
 	}
 	for i := 0; i < 30; i++ {
-		a := &models.Spot{Zone: "B", Type: "NORMAL"}
+		a := &models.Spot{Zone: "B", Type: "Normal"}
 		Db.Create(a)
 	}
 	for i := 0; i < 40; i++ {
 		a := &models.Spot{Zone: "C"}
 		if i >= 0 && i <= 4 {
-			a.Type = "DISCAPACITADO"
+			a.Type = "Handicapped"
 		} else if i >= 19 && i <= 21 {
-			a.Type = "EMERGENCIA"
+			a.Type = "Emergency"
 		} else if i >= 37 && i <= 40 {
-			a.Type = "PROVEEDOR"
+			a.Type = "Provider"
 		} else {
-			a.Type = "NORMAL"
+			a.Type = "Normal"
 		}
 		Db.Create(a)
 	}

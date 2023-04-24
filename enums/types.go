@@ -1,11 +1,12 @@
 package enums
 
+// GetVehicleTypes returns the vehicle types.
 func GetVehicleTypes() []string {
 	return []string{
-		"NORMAL",
-		"VIP",
-		"DISCAPACITADO",
-		"EMERGENCIA",
-		"PROVEEDOR",
+		"Normal",
+		"Vip",
+		"Handicapped",
+		"Emergency",
+		"Provider",
 	}
 }

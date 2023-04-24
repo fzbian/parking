@@ -9,25 +9,31 @@ import (
 
 func main() {
 
-	app := app.New()
+	// Create the app and the window.
+	App := app.New()
 
-	window := app.NewWindow("Parqueadero Colegio Jose Max Leon")
+	// Create the window.
+	window := App.NewWindow("Parking José Max León Bilingual School")
+
+	// Set the size of the window.
 	window.Resize(fyne.Size{
 		Width:  800,
 		Height: 600,
 	})
+
+	// Set the size of the window to be fixed.
 	window.SetFixedSize(true)
+	// Center the window on the screen.
 	window.CenterOnScreen()
 
+	// Set the icon of the window.
 	LogoResource := assets.GetIcon()
 	window.SetIcon(LogoResource)
 
+	// Get the main container and set it as the content of the window.
 	MainContainer := views.GetMainContainer(window, LogoResource)
 
+	// Show the window and run the app.
 	window.SetContent(MainContainer)
 	window.ShowAndRun()
 }
-
-/* TODO
-- Mostrar por sonido cuando el parqueadero este por llenarse y cuando este lleno
-*/
