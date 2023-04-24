@@ -118,7 +118,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 						Width:  900,
 						Height: 650,
 					}), table)
-				MainContainer = MidContainer
+				MainContainer.Objects[1] = MidContainer
 				// If there is no error, show the message in a dialog.
 				dialog.ShowInformation("Information", message, window)
 			}

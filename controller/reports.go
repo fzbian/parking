@@ -9,6 +9,7 @@ import (
 
 // GetTotalTimeByZone function receives a request of type "models.Spot" and returns the total time
 // that the vehicles have been parked in the zone and an error if one occurs.
+// TODO: bug when reusing the function updating the data
 func GetTotalTimeByZone(request models.Spot) (string, error) {
 
 	// Declare an empty slice of models.VehiclesSpots structs
@@ -96,9 +97,9 @@ func GetVehiclesProvidersToPay() ([]models.Vehicles, error) {
 	// Declare a variable called vehicles as a slice of models.Vehicles
 	var vehicles []models.Vehicles
 
-	// Define a subquery that selects the IDs of all vehicles with a vehicle_type of 'PROVEEDOR'
+	// Define a subquery that selects the IDs of all vehicles with a vehicle_type of 'Provider'
 	subquery := utils.Db.Table("vehicles").
-		Where("vehicle_type = 'PROVEEDOR'").
+		Where("vehicle_type = 'Provider'").
 		Select("id")
 
 	// Define a second subquery that selects the vehicle IDs of all vehicles that have parked for
