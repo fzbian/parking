@@ -223,6 +223,10 @@ func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.B
 			dialog.ShowInformation("Error", err.Error(), window)
 			return
 		}
+		if zoneMostUsed == "" {
+			dialog.ShowInformation("Error", "No vehicles have entered in the last 24 hours.", window)
+			return
+		}
 		// If there is no error, show the message in a dialog.
 		dialog.ShowInformation("Information", fmt.Sprintf("The most used zone has been the %s zone.", zoneMostUsed), window)
 	})
