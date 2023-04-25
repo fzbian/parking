@@ -7,41 +7,37 @@ import (
 	"time"
 )
 
-// GetTotalTimeByZone function receives a request of type "models.Spot" and returns the total time
-// that the vehicles have been parked in the zone and an error if one occurs.
-// TODO: bug when reusing the function updating the data
+// GetTotalTimeByZone returns the total time that vehicles have been parked in a zone
 func GetTotalTimeByZone(request models.Spot) (string, error) {
 
-	// Declare an empty slice of models.VehiclesSpots structs
+	// Declare a variable called vehiclesSpots as a slice of models.VehiclesSpots
 	var vehiclesSpots []models.VehiclesSpots
-
-	// Build a subquery to select all spot ids that match the given zone and store the query in subquery variable
 	subquery := utils.Db.Table("spots").
 		Where("zone = ?", request.Zone).
 		Select("id")
 
-	// Build a query to select all vehicles spots where the spot is in the subquery's
-	// list of spot ids and store the results in vehiclesSpots slice
+	// Run a query that selects all vehicles_spots from the vehicles_spots
+	// table where the spot is in the subquery
 	result := utils.Db.Table("vehicles_spots").
 		Where("spot IN (?)", subquery).
 		Find(&vehiclesSpots)
 
-	// If there was an error with the query, return an empty string and the error
+	// If there was an error during the query, return nil slice and the error
 	if result.Error != nil {
 		return "", result.Error
 	}
 
-	// Declare a variable to store the total time and initialize it to 0
+	// Declare a variable called totalTime as a time.Duration
 	var totalTime time.Duration
-	// Loop through each vehicleSpot in the vehiclesSpots slice and add the difference
-	// between its exit time and entry time to totalTime
+	// Loop through the vehiclesSpots slice
 	for _, vehicleSpot := range vehiclesSpots {
-		totalTime += vehicleSpot.ExitTime.Sub(vehicleSpot.EntryTime)
+		if vehicleSpot.EntryTime != nil && vehicleSpot.ExitTime != nil {
+			totalTime += vehicleSpot.ExitTime.Sub(*vehicleSpot.EntryTime)
+		}
 	}
 
-	// Convert totalTime to a string and return it along with nil error
+	// Return the total time as a string and nil error
 	return totalTime.String(), nil
-
 }
 
 // GetMostUsedZone function returns the most used zone and an error if one occurs.
