@@ -45,5 +45,9 @@ Remember to do a `go get` before running the code
 
 ## Screenshots
 
+![image](https://user-images.githubusercontent.com/66271721/234440041-2747d1fe-2df0-4545-9fe9-558c6610b4da.png)
+![image](https://user-images.githubusercontent.com/66271721/234440060-27b6072a-4e9d-43f1-af9e-5fe39edb6c45.png)
+![image](https://user-images.githubusercontent.com/66271721/234440083-4aee7dd2-f126-44b9-8dd3-ffdb9e953051.png)
+
 ## Credits
 created by [Fabian Martin](https://github.com/fzbian/)
