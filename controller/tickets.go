@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var DevaVuFont = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+var DevaVuFont = "./assets/fonts/DejaVuSans.ttf"
 
 // CreateEntryTicket creates input tickets validating the type of vehicle and assigning hours and values
 func CreateEntryTicket(PlateNumber, VehicleType, SpotZone string, SpotID int) {

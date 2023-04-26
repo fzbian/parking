@@ -54,12 +54,16 @@ func ParkingVehicle(request models.Vehicles) (string, error) {
 		return "", errors.New("The parking lot is full")
 	}
 
+	// Gets the current time
+	now := time.Now()
+	timePtr := &now
+
 	// Creates a new row in the "vehicles_spots" table with the vehicle ID, the spot ID, and the entry time.
 	utils.Db.Table("vehicles_spots").
 		Create(&models.VehiclesSpots{
 			VehicleId: vehicle.Id,
 			Spot:      spot.ID,
-			EntryTime: time.Now(),
+			EntryTime: timePtr,
 		})
 
 	// Updates the spot's status to "in use".
