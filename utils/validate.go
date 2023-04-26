@@ -10,9 +10,6 @@ import (
 // The function returns an error if the plate number is not valid.
 func ValidatePlateNumber(PlateNumber string) error {
 
-	// Convert the plate number to uppercase.
-	PlateNumber = strings.ToUpper(PlateNumber)
-
 	// Check if the plate number is 6 characters long.
 	if len(PlateNumber) != 6 {
 		return errors.New("Plate number must be 6 characters long")
@@ -23,9 +20,13 @@ func ValidatePlateNumber(PlateNumber string) error {
 		return errors.New("Plate number must be in the format ABC123")
 	}
 
+	// Check if the plate number is already in uppercase.
+	if strings.EqualFold(PlateNumber, strings.ToUpper(PlateNumber)) == false {
+		return errors.New("Plate number must be in uppercase")
+	}
+
 	// The plate number is valid.
 	return nil
-
 }
 
 // ValidateVehicleType validates a vehicle type.
