@@ -131,7 +131,7 @@ func LeftButtons(window fyne.Window, table *widget.Table) (*widget.Button, *widg
 
 // RightButtons creates the buttons that will be on the right side and returns the pointers
 // to widget.Button to be used in the containers.
-func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.Button, *widget.Button, *widget.Button) {
+func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.Button, *widget.Button, *widget.Button, *widget.Label) {
 
 	// Gets the dialogs of the forms with their inputs
 	RecordsVehiclesTypeForm, VehicleTypeEntry := RecordsVehiclesTypeDialog()
@@ -237,6 +237,9 @@ func RightButtons(window fyne.Window) (*widget.Button, *widget.Button, *widget.B
 		window.Close()
 	})
 
+	// Create CreditsLabel and set the text.
+	CreditsLabel := widget.NewLabel("Developed by: \nFabian Martin")
+
 	// Return the pointers to the buttons.
-	return ReportsByVehicleType, ReportsByZone, ReportsProvidersCollection, ZoneMostUsed, ExitButton
+	return ReportsByVehicleType, ReportsByZone, ReportsProvidersCollection, ZoneMostUsed, ExitButton, CreditsLabel
 }
